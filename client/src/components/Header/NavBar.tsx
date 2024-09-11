@@ -3,13 +3,18 @@ import AuthNavBar from "./AuthNavBar"
 
 function NavBar() {
   return (
-    <div>
-        <span>
-          <Link to={'/home'}>Home</Link>
-        </span>
-        <span>
-          <Link to={'/myblogs'}>My Blogs</Link>
-        </span>
+    <div className="flex text-xl mx-2">
+        <div className="w-full ">
+          <span className="mx-2">
+            <Link to={'/home'}>Home</Link>
+          </span>
+          <span className="mx-2">
+            <Link to={'/myblogs'}>My Blogs</Link>
+          </span>
+          <span className="mx-2">
+            <Link to={'/newblog'}>Write</Link>
+          </span>
+        </div>
         <AuthNavBar/>
     </div>
   )

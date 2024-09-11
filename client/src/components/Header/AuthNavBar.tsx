@@ -1,6 +1,9 @@
 function AuthNavBar() {
   return (
-    <div>AuthNavBar</div>
+    <div className="flex m">
+      <span>Login</span>
+      <span>Signup</span>
+    </div>
   )
 }
 

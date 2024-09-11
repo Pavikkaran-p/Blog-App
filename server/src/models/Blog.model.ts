@@ -1,12 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
-
-export interface Blog extends Document {
-  title: string;
-  content: string;
-  tags: string[];
-  createdAt: Date;
-}
-
+import { Blog } from '../types/Blog';
 
 const BlogSchema: Schema = new Schema({
   title: { type: String, required: true },
@@ -15,5 +8,5 @@ const BlogSchema: Schema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-
-export default mongoose.model<Blog>('Blog', BlogSchema);
+const blog=mongoose.model<Blog>('Blog', BlogSchema)
+export default blog

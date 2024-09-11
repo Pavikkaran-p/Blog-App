@@ -17,7 +17,7 @@ export const EmailConfig = {
 }
 
 export const JwtConfig = {
-  key: process.env.JWT_KEY || 'ASFKJHASFJASLKFJS',
+  key: process.env.JWT_KEY || 'pgdrwixbncvdfuhudnmshwu',
 }
 
 
