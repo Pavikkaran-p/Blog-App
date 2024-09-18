@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import blogsType from '../../types/BlogType';
+import BlogCard from './BlogCard';
 
 const DisplayBlogs = () => {
     const [blogs, setBlogs] = useState<blogsType[]>([]);
@@ -29,10 +30,7 @@ const DisplayBlogs = () => {
             <h1 className="text-3xl font-bold text-center mb-6">Blog Posts</h1>
             {
                 blogs.map((blog, index) => (
-                    <div key={index} className="bg-white p-4 shadow-md rounded-lg mb-4">
-                        <h2 className="text-2xl font-semibold mb-2">{blog.title}</h2>
-                        <p className="text-gray-700">{blog.content}</p>
-                    </div>
+                    <BlogCard key={index} blog={blog}/>
                 ))
             }
         </div>

@@ -1,8 +1,10 @@
 import express from "express";
-import { login } from "../controllers/authcontroller";
+import { gauth, signin, signup } from "../controllers/authcontroller";
 
 const authrouter=express.Router()
 
-authrouter.post('/login',login)
+authrouter.post('/signin',signin)
+authrouter.post('/signup',signup)
+authrouter.post('/google',gauth)
 
 export default authrouter

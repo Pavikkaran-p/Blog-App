@@ -1,12 +1,13 @@
 import DisplayBlogs from "../components/Home/DisplayBlogs";
-import NewBlog from "../components/Features/NewBlog";
 
-export default function(){
+export default function HomePage(){
     return(
         <>
         {/* <h1>Home Page</h1> */}
-        <DisplayBlogs/>
-        <NewBlog/>
+        <div className="dark:bg-slate-800 bg-black mx-1 sm:mx-4">
+            <DisplayBlogs/>
+
+        </div>
         </>
     )
 }

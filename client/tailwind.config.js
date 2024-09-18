@@ -6,9 +6,9 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily:{
-        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco','Consolas']
-      }
+      // fontFamily:{
+      //   mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco','Consolas']
+      // }
     },
   },
   plugins: [],
