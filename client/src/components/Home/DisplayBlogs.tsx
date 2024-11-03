@@ -11,7 +11,7 @@ const DisplayBlogs = () => {
             try {
                 setIsLoading(true)
                 const url=import.meta.env.VITE_BACKEND_URL
-                const response = await axios.get(url+'/blog/allblogs');
+                const response = await axios.get(url+'/api/v1/blog/allblogs');
                 console.log(response.data)
                 setBlogs(response.data);
                 setIsLoading(false)
