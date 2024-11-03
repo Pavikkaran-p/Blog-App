@@ -5,6 +5,7 @@ dotenv.config()
 const env: Environment = <any>process.env
 export const AppCredentials = {
   port: env.PORT || 3000,
+  client :env.FRONTEND_URL
 }
 
 export const Mongo = {
