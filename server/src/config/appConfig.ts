@@ -21,6 +21,3 @@ export const JwtConfig = {
 }
 
 export const GoogleClientId= process.env.GOOGLE_CLIENT_ID
-
-
-export const thresholdRadiusForMessage = process.env.THRESHOLD_RADIUS || 50
