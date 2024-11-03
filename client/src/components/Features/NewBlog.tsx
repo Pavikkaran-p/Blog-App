@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const NewBlog = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [imageUploadProgress, setImageUploadProgress] = useState<number | null>(null);
-  const [imageUploadError, setImageUploadError] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<String|null>("")
 
   const handleAddTag = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && event.currentTarget.value.trim()) {
@@ -24,21 +25,23 @@ const NewBlog = () => {
     if (!file) return;
     
     const formData = new FormData();
-    formData.append("image", file);
+    formData.append("file", file);
 
     try {
       const url = import.meta.env.VITE_BACKEND_URL;
-      const response = await axios.post(`${url}/upload`, formData, {
+      const response = await axios.post(`${url}/blog/uploadfile`, formData, {
         // onUploadProgress: (progressEvent) => {
         //   const { loaded, total } = progressEvent;
         //   setImageUploadProgress(Math.round((loaded * 100) / total));
         // }
       });
       console.log(response.data);
-      setImageUploadProgress(null); // Reset after upload
+      setImageUrl(response.data.fileUrl)
+      setImageUploadProgress(null);
+      toast.success("Image uploaded sucessfully")
     } catch (error) {
       console.error(error);
-      setImageUploadError("Image upload failed.");
+      toast.error("Image upload failed")
     }
   };
 
@@ -50,7 +53,8 @@ const NewBlog = () => {
         onSubmit={async (values, { setSubmitting, setStatus }) => {
           try {
             const url = import.meta.env.VITE_BACKEND_URL;
-            const blogData = { ...values, tags };
+            handleUploadImage()
+            const blogData = { ...values, tags,imageUrl };
             await axios.post(`${url}/blog/newblog`, blogData);
             setStatus({ success: true });
           } catch (error) {
