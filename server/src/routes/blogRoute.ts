@@ -2,12 +2,12 @@ import express, { Request, Response } from "express";
 import { allblogs, newblog, uploadFileToS3 } from "../controllers/blogcontroller";
 import { multerUpload } from "../services/InitMulter";
 
-const router=express.Router()
-router.get('/allblogs',allblogs)
-router.post('/newblog',newblog)
-router.post('/uploadfile', multerUpload.single('file'),uploadFileToS3)
+const blogRoute=express.Router()
+blogRoute.get('/allblogs',allblogs)
+blogRoute.post('/newblog',newblog)
+blogRoute.post('/uploadfile', multerUpload.single('file'),uploadFileToS3)
 
-router.get('*',(req:Request,res:Response)=>{
-    res.send("No matching troutes")
+blogRoute.get('*',(req:Request,res:Response)=>{
+    res.send("No matching routes")
 })
-export default router
+export const blogRoutes = blogRoute

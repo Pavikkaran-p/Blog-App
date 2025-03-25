@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import axios from "axios";
+import GoogleAuthButton from "./GoogleAuthButton";
 // import Button from "../UI/Button";
 
 export default function SignUpComponent() {
@@ -23,15 +24,16 @@ export default function SignUpComponent() {
     return (
         <div className="h-screen flex justify-center flex-col">
             <div className="flex justify-center">
-                <p className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
+                <div className="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100">
                     <div>
                         <div className="px-10">
                             <div className="text-xl font-extrabold mb-10">
                                 Sign up to Blogs
                             </div>
                         </div>
-                        <div className="mb-2 bg-gray-50 border border-gray-300 py-2 rounded-xl w-full flex justify-center items-center">
-                            <p>Continue with Google</p>
+                        <div className="mb-2 bg-gray-50 border border-gray-300  rounded-xl w-full flex justify-center items-center">
+                            {/* <p>Continue with Google</p> */}
+                            <GoogleAuthButton/>
                         </div>
                         <div className="bg-gray-50 border border-gray-300 py-2 rounded-xl w-full flex justify-center items-center">
                             <p>Continue with Github</p>
@@ -55,7 +57,7 @@ export default function SignUpComponent() {
                             <button className="mt-8 w-full text-white bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" type="submit">Sign In</button>
                         </form>
                     </div>
-                </p>
+                </div>
             </div>
         </div>
     );

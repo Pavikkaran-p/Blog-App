@@ -29,7 +29,7 @@ const NewBlog = () => {
 
     try {
       const url = import.meta.env.VITE_BACKEND_URL;
-      const response = await axios.post(`${url}/blog/uploadfile`, formData, {
+      const response = await axios.post(`${url}/api/v1/blog/uploadfile`, formData, {
         // onUploadProgress: (progressEvent) => {
         //   const { loaded, total } = progressEvent;
         //   setImageUploadProgress(Math.round((loaded * 100) / total));
@@ -55,7 +55,7 @@ const NewBlog = () => {
             const url = import.meta.env.VITE_BACKEND_URL;
             handleUploadImage()
             const blogData = { ...values, tags,imageUrl };
-            await axios.post(`${url}/blog/newblog`, blogData);
+            await axios.post(`${url}/api/v1/blog/newblog`, blogData);
             setStatus({ success: true });
           } catch (error) {
             console.error(error);

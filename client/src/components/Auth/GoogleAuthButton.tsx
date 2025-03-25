@@ -4,10 +4,11 @@ import axios from 'axios'
 import { BackendUrl, GOOGLE_CLIENT_ID } from '../../config/AppConfig'
 
 const GoogleAuthButton: React.FC = () => {
+  
   const handleSuccess = async (response: CredentialResponse) => {
+    console.log(response)
     if (response.credential) {
       const token = response.credential
-
       try {
         const res = await axios.post(BackendUrl+'/auth/google', { token })
 
@@ -24,8 +25,7 @@ const GoogleAuthButton: React.FC = () => {
   }
 
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      
+    <GoogleOAuthProvider clientId="854040976352-2adoem7uhhcpqpckoq7rhj7hjsljisul.apps.googleusercontent.com">
         <GoogleLogin
           onSuccess={handleSuccess}
           onError={handleError}
