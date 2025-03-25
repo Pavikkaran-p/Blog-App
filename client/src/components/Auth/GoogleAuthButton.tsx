@@ -1,7 +1,7 @@
 import React from 'react'
 import { GoogleOAuthProvider, GoogleLogin, CredentialResponse } from '@react-oauth/google'
 import axios from 'axios'
-import { BackendUrl, GOOGLE_CLIENT_ID } from '../../config/AppConfig'
+import { BackendUrl } from '../../config/AppConfig'
 
 const GoogleAuthButton: React.FC = () => {
   
