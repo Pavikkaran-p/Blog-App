@@ -10,10 +10,10 @@ const GoogleAuthButton: React.FC = () => {
     if (response.credential) {
       const token = response.credential
       try {
-        const res = await axios.post(BackendUrl+'/auth/google', { token })
+        const res = await axios.post(BackendUrl+'/api/v1/auth/google', { token })
 
         console.log('User authenticated:', res.data)
-        localStorage.setItem('jwt', res.data.token)
+        localStorage.setItem('authToken', res.data.token)
       } catch (error) {
         console.error('Error during authentication:', error)
       }

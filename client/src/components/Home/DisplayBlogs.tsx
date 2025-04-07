@@ -27,12 +27,15 @@ const DisplayBlogs = () => {
     </div>
     return (
         <div className="p-6 bg-gray-100">
+            <div className="max-w-2xl mx-auto">
+
             <h1 className="text-3xl font-bold text-center mb-6">Blog Posts</h1>
             {
                 blogs.map((blog, index) => (
                     <BlogCard key={index} blog={blog}/>
                 ))
             }
+            </div>
         </div>
     );
 };

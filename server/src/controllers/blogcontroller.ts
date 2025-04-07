@@ -65,16 +65,13 @@ export async function newblog(req: Request,res: Response){
         tags: tags,
         });
 
-        const isSaved = await newBlog.save()
-        const isPushed = await GAuthUser.findByIdAndUpdate(
+        await newBlog.save()
+        await GAuthUser.findByIdAndUpdate(
             userId,
             { $push: { blogs: newBlog._id } },
             { new: true }
         )
-          
-        console.log("isPushed",isPushed)
-        console.log("New Blog saved",isSaved)
-        res.status(200).json("Saved successfully")
+        res.status(200).json({"message":"Blog saved successfully"})
     } catch (error) {
         console.log(error)
         res.status(500).json("Something went wrong")

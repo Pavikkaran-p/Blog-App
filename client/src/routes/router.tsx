@@ -6,7 +6,7 @@ import SigninPage from "../pages/Auth/SigninPage";
 import SignupPage from "../pages/Auth/SignupPage";
 import ViewBlog from "../components/Features/ViewBlog";
 import MyBlogs from "../components/Features/MyBlogs";
-
+import Profile from "../pages/Profile";
 const BlogRouter = () => {
   return (
     <Routes>
@@ -17,6 +17,7 @@ const BlogRouter = () => {
         <Route path="/signin" element={<SigninPage/>} />
         <Route path="/signup" element={<SignupPage/>} />
         <Route path="/myblogs" element={<MyBlogs/>} />
+        <Route path="/profile" element={<Profile/>} />
     </Routes>
   )
 }

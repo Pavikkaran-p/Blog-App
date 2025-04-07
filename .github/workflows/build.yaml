@@ -1,4 +1,4 @@
-name: Simple MERN CI
+name: Blog App CI
 
 on:
   push:
