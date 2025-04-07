@@ -4,7 +4,7 @@ import { connectToDb } from './database/connectToDb'
 import { AppCredentials } from './config/appConfig'
 import {blogRoutes} from './routes/blogRoute'
 import authrouter from './routes/authRoute'
-import rateLimiter from './middleware/RateLimiter';
+import rateLimiter from './middleware/RateLimiter.middleware';
 import { allblogs } from './controllers/blogcontroller';
 
 const app=express()
@@ -17,10 +17,10 @@ app.use(cors({
 app.use(rateLimiter)
 
 app.get('/',(req,res)=>{
-    console.log("Hello world")
-    res.status(200).json("Ok")
+    console.log("Server working fine")
+    res.status(200).json("Server working fine")
 })
-app.get("/api/v1/api/v1/blog/allblogs",allblogs)
+app.get("/api/v1/allblogs",allblogs)
 app.use('/api/v1/blog',blogRoutes)
 app.use('/api/v1/auth',authrouter)
 

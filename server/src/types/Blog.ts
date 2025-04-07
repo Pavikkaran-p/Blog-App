@@ -3,4 +3,5 @@ export interface Blog extends Document {
     content: string;
     tags: string[];
     createdAt: Date;
+    userId?: string;
   }

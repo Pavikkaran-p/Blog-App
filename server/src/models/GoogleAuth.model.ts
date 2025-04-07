@@ -6,6 +6,10 @@ const GoogleUserSchema: Schema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   picture: { type: String },
+  blogs: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Blog"
+}]
 });
 
 const GAuthUser=mongoose.model<GoogleAuthUser>('GAuthUser', GoogleUserSchema);

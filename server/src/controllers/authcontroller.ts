@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
-import User from "../models/User";
+import User from "../models/User.model";
 import { JwtConfig } from "../config/appConfig";
 import { authtype, usertype } from "../types/auth";
 import { GoogleAuthClient } from "../services/GoogleAuthClient";
-import GAuthUser from "../models/GoogleAuth";
+import GAuthUser from "../models/GoogleAuth.model";
 import { GoogleAuthUser } from "../types/gauth";
 
 export async function signin(req: Request, res: Response) {
@@ -86,6 +86,7 @@ export async function gauth(req: Request, res: Response) {
         name,
         email,
         picture,
+        blogs: []
       });
 
       await user.save();
@@ -94,14 +95,14 @@ export async function gauth(req: Request, res: Response) {
     // Generate JWT after ensuring user exists
     const jwtToken = jwt.sign(
       { id: user._id, email: user.email },
-      "bfkesbgkbeskgbs",
+      JwtConfig.key,
       { expiresIn: '30d' }
     );
 
     return res.status(user._id ? 200 : 201).json({
       message: user._id ? "Sign-in successful" : "Sign-up successful",
       user: {
-        id: user._id,
+        // id: user._id,
         name: user.name,
         email: user.email,
         picture: user.picture,

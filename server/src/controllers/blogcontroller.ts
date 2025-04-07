@@ -6,14 +6,26 @@ import { v4 as uuidv4 } from 'uuid';
 import { PutObjectCommand, PutObjectCommandInput, S3Client } from '@aws-sdk/client-s3';
 import path from 'path';
 import { s3clientservice } from '../services/AwsS3Client';
+import GAuthUser from '../models/GoogleAuth.model';
+import mongoose from 'mongoose';
+import User from '../models/User.model';
 
-export async function allblogs(req:Request,res:Response){
+export async function allblogs(req: Request, res: Response) {
     try {
-        const data=await Blog.find()        
-        res.send(data)
+        const data = await Blog.find();
+        res.status(200).json(data);
     } catch (error) {
-        console.log(error)
-        res.status(400).send("error")
+        console.error('Error fetching blogs:', error);
+        res.status(500).json({ error: 'An error occurred while fetching blogs.' });
+    }
+}
+export async function myblogs(req: Request, res: Response) {
+    try {
+        const data = await Blog.find({userId:req.params.userId});
+        res.status(200).json(data);
+    } catch (error) {
+        console.error('Error fetching blogs:', error);
+        res.status(500).json({ error: 'An error occurred while fetching blogs.' });
     }
 }
 
@@ -31,25 +43,41 @@ export async function FindById(req:Request,res:Response){
 
 export async function newblog(req: Request,res: Response){
     try {
-        const {title, content,imageUrl}=req.body
-        
-        if (!title || !content) {
+        const {title, content,imageUrl,tags,email}=req.body
+        console.log(req.body)
+        if (!title || !content ) {
             return res.status(400).json({ error: 'Title and content are required.' });
         }
+        const email2 = res.locals.email;
+        const user = await GAuthUser.findOne({ email:email2 });
+        console.log(user)
+        if (!user) {
+        return res.status(404).json({ error: "User not found." });
+        }
+        const userId = user?._id || new mongoose.Types.ObjectId("6612d2fcf69d8a5f34719f9b");
 
+        console.log("userId",userId)
         const newBlog = new BlogModel({
         title,
         content,
-        imageUrl
-        // tags: tags ? tags.split(',').map((tag: string) => tag.trim()) : [],
+        userId,
+        imageUrl,
+        tags: tags,
         });
 
-        await newBlog.save()
-        console.log("New Blog saved")
+        const isSaved = await newBlog.save()
+        const isPushed = await GAuthUser.findByIdAndUpdate(
+            userId,
+            { $push: { blogs: newBlog._id } },
+            { new: true }
+        )
+          
+        console.log("isPushed",isPushed)
+        console.log("New Blog saved",isSaved)
         res.status(200).json("Saved successfully")
     } catch (error) {
         console.log(error)
-        res.status(500)
+        res.status(500).json("Something went wrong")
     }
 }
 
@@ -60,7 +88,9 @@ export async function uploadFileToS3(req: Request, res: Response): Promise<Respo
     try {
       const file = req.file;
       console.log(file.originalname)
-      const uniqueFileName = `${uuidv4()}+${file.originalname}`;
+
+      // const uniqueFileName = `${uuidv4()}+${file.originalname}`;
+      const uniqueFileName = `${uuidv4()}`;
       
       const uploadParams: PutObjectCommandInput = {
         Bucket: process.env.AWS_BUCKET_NAME!,
@@ -73,6 +103,7 @@ export async function uploadFileToS3(req: Request, res: Response): Promise<Respo
       const command = new PutObjectCommand(uploadParams);
       await s3clientservice.send(command);
   
+      // const fileUrl = `${uniqueFileName}`;
       const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${uniqueFileName}`;
   
       return res.json({

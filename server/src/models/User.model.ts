@@ -10,7 +10,16 @@ const userSchema=new Schema(
         password:{
             type:String,
             required:true,
-        }
+        },
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        blogs: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Blog"
+        }]
     },
     {
         timestamps: true
