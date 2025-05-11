@@ -20,7 +20,7 @@ app.get('/',(req,res)=>{
     console.log("Server working fine")
     res.status(200).json("Server working fine")
 })
-app.get("/api/v1/allblogs",allblogs)
+
 app.use('/api/v1/blog',blogRoutes)
 app.use('/api/v1/auth',authrouter)
 

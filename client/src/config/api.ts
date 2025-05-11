@@ -10,6 +10,7 @@ api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem('authToken');
     if (token && config.headers) {
+      console.log("Authorization",config.headers)
       config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;

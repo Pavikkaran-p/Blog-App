@@ -5,7 +5,6 @@ import User from "../models/User.model";
 import { JwtConfig } from "../config/appConfig";
 import { authtype, usertype } from "../types/auth";
 import { GoogleAuthClient } from "../services/GoogleAuthClient";
-import GAuthUser from "../models/GoogleAuth.model";
 import { GoogleAuthUser } from "../types/gauth";
 
 export async function signin(req: Request, res: Response) {
@@ -76,19 +75,20 @@ export async function gauth(req: Request, res: Response) {
       return res.status(400).send("Missing required user information");
     }
 
-    let user = (await GAuthUser.findOne({ email })) as GoogleAuthUser;
+    let user = await User.findOne({ email })
     
     console.log(user)
     if (!user) {
       // Create new user if not found
-      user = new GAuthUser({
+      user = new User({
         googleId,
         name,
         email,
+        username:"",
         picture,
         blogs: []
       });
-
+      console.log("User inside if",user)
       await user.save();
     }
 

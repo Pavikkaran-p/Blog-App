@@ -1,80 +1,113 @@
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import UserIcon from "../UI/UserIcon";
-// import AuthNavBar from "./AuthNavBar"
 
 function NavBar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [showAuthLinks, setShowAuthLinks] = useState(false)
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [showAuthLinks, setShowAuthLinks] = useState(false);
 
   useEffect(() => {
-    // setIsLoggedIn(true);
-    if (localStorage.getItem("authtoken")!==null) {
-      setIsLoggedIn(true);
+    if (!localStorage.getItem("authToken")) {
+      setIsLoggedIn(false);
     }
-  }, [])
-  
+  }, []);
+
   const toggleAuthLinks = () => {
-    setShowAuthLinks(!showAuthLinks);
-  }
+    setShowAuthLinks((prev) => !prev);
+  };
+
+  const logoutHandler = () => {
+    localStorage.removeItem("authToken");
+    setIsLoggedIn(false);
+    setShowAuthLinks(false);
+    navigate("/signin");
+  };
 
   return (
-    <div className="flex justify-between items-center text-xl sm:text-xl lg:text-2xl sm:mx-2 py-2 bg-blue-50 rounded-b-2xl shadow-lg">
-      <div className="flex space-x-4 mx-4">
-        <span className="text-orange-500 hover:text-orange-600 transition duration-300">
-          <Link to={'/home'}>Home</Link>
-        </span>
-        <span className="hover:text-orange-600 transition duration-300">
-          <Link to={'/myblogs'}>My Blogs</Link>
-        </span>
-        <span className="hover:text-orange-600 transition duration-300">
-          <Link to={'/newblog'}>Write</Link>
-        </span>
-      </div>
-      
-      {isLoggedIn ? (
-        <div className="relative ml-32 pl-12">
-          <div onClick={toggleAuthLinks} className="cursor-pointer">
-            <UserIcon />
+    <nav className="bg-white shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 items-center">
+          {/* Left navigation */}
+          <div className="flex space-x-6">
+            <Link
+              to="/home"
+              className="text-lg font-medium text-gray-700 hover:text-blue-600 transition"
+            >
+              Home
+            </Link>
+            <Link
+              to="/myblogs"
+              className="text-lg font-medium text-gray-700 hover:text-blue-600 transition"
+            >
+              My Blogs
+            </Link>
+            <Link
+              to="/newblog"
+              className="text-lg font-medium text-gray-700 hover:text-blue-600 transition"
+            >
+              Write
+            </Link>
           </div>
-          {showAuthLinks && (
-            <ul className="absolute right-0 mt-4 w-48 bg-white shadow-md rounded-lg overflow-hidden transition-all duration-300 transform scale-95 origin-top-right">
-              <li className="border-b border-gray-200 hover:bg-gray-100">
-                <Link className="block px-4 py-2" to={'/profile'}>
-                  Profile
-                </Link>
-              </li>
-              <li className="hover:bg-gray-100">
-                <Link className="block px-4 py-2" to={'/logout'}>
-                  Logout
-                </Link>
-              </li>
-            </ul>
-          )}
+
+          {/* Right Auth Section */}
+          <div className="relative">
+            {isLoggedIn ? (
+              <div>
+                <div
+                  onClick={toggleAuthLinks}
+                  className="flex items-center cursor-pointer hover:opacity-80"
+                >
+                  <UserIcon />
+                </div>
+                {showAuthLinks && (
+                  <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-lg py-2 animate-fade-in">
+                    <Link
+                      to="/profile"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+                    >
+                      Profile
+                    </Link>
+                    <button
+                      onClick={logoutHandler}
+                      className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div>
+                <button
+                  onClick={toggleAuthLinks}
+                  className="text-blue-600 font-medium hover:text-blue-700 transition"
+                >
+                  Account
+                </button>
+                {showAuthLinks && (
+                  <div className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-lg py-2 animate-fade-in">
+                    <Link
+                      to="/signin"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+                    >
+                      Sign in
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition"
+                    >
+                      Sign up
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      ) : (
-        <div className="relative">
-          <button onClick={toggleAuthLinks} className="text-orange-500 hover:text-orange-600 transition duration-300">
-            Account
-          </button>
-          {showAuthLinks && (
-            <ul className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-lg overflow-hidden transition-all duration-300 transform scale-95 origin-top-right">
-              <li className="border-b border-gray-200 hover:bg-gray-100">
-                <Link className="block px-4 py-2" to={'/signin'}>
-                  Sign in
-                </Link>
-              </li>
-              <li className="hover:bg-gray-100">
-                <Link className="block px-4 py-2" to={'/signup'}>
-                  Sign up
-                </Link>
-              </li>
-            </ul>
-          )}
-        </div>
-      )}
-    </div>
-  )
+      </div>
+    </nav>
+  );
 }
 
-export default NavBar
+export default NavBar;

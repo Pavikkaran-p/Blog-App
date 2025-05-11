@@ -1,30 +1,32 @@
 import mongoose, { Schema } from "mongoose";
 
-const userSchema=new Schema(
-    {
-        email:{
-            type:String,
-            required:true,
-            unique:true,
-        },
-        password:{
-            type:String,
-            required:true,
-        },
-        username: {
-            type: String,
-            required: true,
-            unique: true,
-        },
-        blogs: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Blog"
-        }]
+const userSchema = new mongoose.Schema({
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
-    {
-        timestamps: true
-    }
-)
+    password: {
+      type: String, // required only for email/password login
+      default: null,
+    },
+    googleId: {
+      type: String, // required only for Google login
+      default: null,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    picture: {
+      type: String,
+    },
+    blogs: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Blog"
+    }]
+  }, { timestamps: true });
+  
 
 const User=mongoose.model('User',userSchema)
 

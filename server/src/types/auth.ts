@@ -14,7 +14,7 @@ export interface usertype{
 
 export interface IUser extends Document {
     googleId?: string;   
-    name: string;
+    name?: string;
     email: string;
     password?: string; 
     picture?: string;

@@ -29,11 +29,16 @@ export async function myblogs(req: Request, res: Response) {
     }
 }
 
-export async function FindById(req:Request,res:Response){
+export async function getBlogById(req:Request,res:Response){
     try {
-        const blogid=req.params
-        const data=await Blog.find()        
-        res.send(data)
+      console.log("req",req)
+        const blogId=req.headers['blogid']
+        console.log("blogid",blogId)
+        const blog=await Blog.findOne({blogId}) 
+        // .select("title content userId imageUrl tags");
+        console.log("blog",blog)
+        if (!blog) return res.status(404).send("Blog not found");     
+        res.status(200).json(blog);
     } catch (error) {
         console.log(error)
         res.status(400).send("error")
@@ -43,13 +48,13 @@ export async function FindById(req:Request,res:Response){
 
 export async function newblog(req: Request,res: Response){
     try {
-        const {title, content,imageUrl,tags,email}=req.body
+        const {title, content,imageUrl,tags}=req.body
         console.log(req.body)
         if (!title || !content ) {
             return res.status(400).json({ error: 'Title and content are required.' });
         }
-        const email2 = res.locals.email;
-        const user = await GAuthUser.findOne({ email:email2 });
+        const email = res.locals.email;
+        const user = await User.findOne({ email:email });
         console.log(user)
         if (!user) {
         return res.status(404).json({ error: "User not found." });
@@ -57,16 +62,20 @@ export async function newblog(req: Request,res: Response){
         const userId = user?._id || new mongoose.Types.ObjectId("6612d2fcf69d8a5f34719f9b");
 
         console.log("userId",userId)
+        const blogId = uuidv4();
+        console.log("blogId",blogId)
+        // slugify(title, { lower: true });
         const newBlog = new BlogModel({
+        blogId,
         title,
         content,
         userId,
         imageUrl,
-        tags: tags,
+        tags,
         });
 
         await newBlog.save()
-        await GAuthUser.findByIdAndUpdate(
+        await User.findByIdAndUpdate(
             userId,
             { $push: { blogs: newBlog._id } },
             { new: true }
@@ -111,4 +120,42 @@ export async function uploadFileToS3(req: Request, res: Response): Promise<Respo
       console.error('Error uploading file to S3:', err);
       return res.status(500).json({ error: 'Error uploading file' });
     }
+}
+
+export async function newComment(req: Request, res: Response) {
+  try {
+    const { blogId, text } = req.body;
+
+    if (!blogId || !text) {
+      return res.status(400).json({ error: "blogId and text are required." });
+    }
+
+    const email = res.locals.email;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    const blog = await BlogModel.findOne({ blogId });
+
+    if (!blog) {
+      return res.status(404).json({ error: "Blog post not found." });
+    }
+
+    blog.comments.push({
+        commentUserId: new mongoose.Types.ObjectId(user._id),
+        text: text,
+    });
+
+    await blog.save();
+
+    res.status(200).json({
+      message: "Comment added successfully",
+      comments: blog.comments,
+    });
+  } catch (error) {
+    console.error("Error adding comment:", error);
+    res.status(500).json({ error: "Something went wrong" });
   }
+}

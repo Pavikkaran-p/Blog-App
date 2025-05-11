@@ -1,11 +1,14 @@
 import mongoose from 'mongoose'
 import { Mongo } from '../config/appConfig'
 
-export async function connectToDb() {
+export function connectToDb() {
   try {
-    const db=await mongoose.connect(Mongo.url).then(() => {
-      console.log(`Connection to MongoDb `)
-    })
+    const f = async () => {
+      const db=await mongoose.connect(Mongo.url).then(() => {
+        console.log(`Connection to MongoDb `)
+      })
+    }
+    f()
   } catch (err) {
     console.log("MongoDB connection failed")
     setTimeout(() => {

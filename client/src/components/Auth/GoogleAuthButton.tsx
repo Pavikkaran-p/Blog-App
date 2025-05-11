@@ -2,9 +2,10 @@ import React from 'react'
 import { GoogleOAuthProvider, GoogleLogin, CredentialResponse } from '@react-oauth/google'
 import axios from 'axios'
 import { BackendUrl } from '../../config/AppConfig'
+import { useNavigate } from 'react-router-dom'
 
 const GoogleAuthButton: React.FC = () => {
-  
+  const navigate = useNavigate()
   const handleSuccess = async (response: CredentialResponse) => {
     console.log(response)
     if (response.credential) {
@@ -14,6 +15,7 @@ const GoogleAuthButton: React.FC = () => {
 
         console.log('User authenticated:', res.data)
         localStorage.setItem('authToken', res.data.token)
+        navigate('/myblogs')
       } catch (error) {
         console.error('Error during authentication:', error)
       }

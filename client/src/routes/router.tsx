@@ -12,7 +12,7 @@ const BlogRouter = () => {
     <Routes>
         <Route path="/" element={<Landing/>} />
         <Route path="/home" element={<HomePage/>} />
-        <Route path="/blog/:id" element={<ViewBlog/>} />
+        <Route path="/blog/:blogId" element={<ViewBlog/>} />
         <Route path="/newblog" element={<NewBlog/>} />
         <Route path="/signin" element={<SigninPage/>} />
         <Route path="/signup" element={<SignupPage/>} />
