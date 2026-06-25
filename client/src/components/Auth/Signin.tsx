@@ -4,10 +4,12 @@ import { BackendUrl } from "../../config/AppConfig";
 import { useNavigate } from "react-router-dom";
 import GoogleAuthButton from "./GoogleAuthButton";
 import toast from "react-hot-toast";
+import { useAuth } from "../../context/AuthContext";
 // import Button from "../UI/Button";
 
 export default function SigninComponent() {
     const navigate=useNavigate();
+    const { login } = useAuth();
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -18,9 +20,11 @@ export default function SigninComponent() {
                 console.log(values)
                 
                 const response  = await axios.post(BackendUrl+"/auth/signin", values);
-                localStorage.setItem("authtoken",response.data.token)
+                const token = response.data.token     
+                localStorage.setItem("authtoken",token)
                 console.log("Sign-in successful", response.data);
                 toast("Sign in sucessful")
+                login(token);
                 navigate('/home')
             } catch (error) {
                 console.error(error);

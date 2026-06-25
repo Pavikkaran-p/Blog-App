@@ -1,25 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import UserIcon from "../UI/UserIcon";
 
 function NavBar() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const { isLoggedIn, logout } = useAuth();
   const [showAuthLinks, setShowAuthLinks] = useState(false);
-
-  useEffect(() => {
-    if (!localStorage.getItem("authToken")) {
-      setIsLoggedIn(false);
-    }
-  }, []);
 
   const toggleAuthLinks = () => {
     setShowAuthLinks((prev) => !prev);
   };
 
   const logoutHandler = () => {
-    localStorage.removeItem("authToken");
-    setIsLoggedIn(false);
+    logout();
     setShowAuthLinks(false);
     navigate("/signin");
   };
